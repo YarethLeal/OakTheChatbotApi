@@ -7,32 +7,37 @@ const tokenizer = new natural.WordTokenizer();
 const stemmer = natural.PorterStemmerEs; // Usa el stemmer en español
 const similarity = natural.JaroWinklerDistance; // Métrica de similitud
 
-const generateResponse = (input) => {
+generateResponse = (input) => {
     const db = loadDB();
-    const stemmedInput = tokenizer.tokenize(input).map(token => stemmer.stem(token)).join(' ');
+    const stemmedInput = tokenizeAndStem(input.toLowerCase());
 
-    let bestMatch = null;
-    let highestScore = 0;
-
-    db.queries.forEach(query => {
-        const stemmedQuestion = tokenizer.tokenize(query.question).map(token => stemmer.stem(token)).join(' ');
-        const score = similarity(stemmedInput, stemmedQuestion);
-
-        if (score > highestScore) {
-            highestScore = score;
-            bestMatch = query;
-        }
-    });
-
-    // Definir un umbral de similitud para determinar si se ha encontrado una coincidencia adecuada
+    const bestMatch = findBestMatch(stemmedInput, db.queries);
     const similarityThreshold = 0.7;
 
-    if (highestScore >= similarityThreshold && bestMatch) {
-        return new Response(input, bestMatch.answer);
+    if (bestMatch.score >= similarityThreshold) {
+        return new Response(input, bestMatch.query.answer);
     } else {
         return new Response(input, 'Lo siento, no entiendo tu pregunta.');
     }
-};
+}
 
+tokenizeAndStem = (text) => {
+    return tokenizer.tokenize(text).map(token => stemmer.stem(token)).join(' ');
+}
+
+findBestMatch = (input, queries) => {
+    let bestMatch = { query: null, score: 0 };
+
+    queries.forEach(query => {
+        const stemmedQuestion = tokenizeAndStem(query.question);
+        const score = similarity(input, stemmedQuestion);
+
+        if (score > bestMatch.score) {
+            bestMatch = { query, score };
+        }
+    });
+
+    return bestMatch;
+}
 module.exports = { generateResponse };
 

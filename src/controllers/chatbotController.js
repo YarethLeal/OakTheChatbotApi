@@ -2,9 +2,9 @@ const { generateResponse } = require('../services/chatbotService');
 const { getAllQuestions } = require('../services/questionService');
 
 // Controlador para la ruta /api/consulta
-const handleUserInput = (req, res) => {
+const handleUserInput = async (req, res) => {
     const userInput = req.body.message;
-    const response = generateResponse(userInput);
+    const response = await generateResponse(userInput);
     res.json({ message: response.botResponse });
 };
 
