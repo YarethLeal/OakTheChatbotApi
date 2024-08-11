@@ -32,8 +32,8 @@
     },
     {
       "id": 6,
-      "question": "¿Cuantos pokemón existen?",
-      "answer": "Actualmente existen 1008 especies de Pokémon.",
+      "question": "¿Que es un entrenador pokemon?",
+      "answer": "Un entrenador pokemon es una persona que captura, entrena y batalla con pokemón, su objetivo es convertirse en un maestro pokemon.",
       "context": ["pokemon","cantidad"]
     },
     {
