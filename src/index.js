@@ -1,9 +1,24 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
+require('dotenv').config();
+const port = process.env.PORT || 3000;
 
-// Middleware
-app.use(express.json());
+// Middleware de seguridad
+app.use(helmet()); // Configura encabezados HTTP seguros
+app.use(xss()); // Limpia datos de entrada para prevenir
+
+// Limitar el número de solicitudes, para evitar ataques de fuerza bruta
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 100 // Limita cada IP a 100 solicitudes por ventana
+});
+app.use(limiter);
+
+//Middleware para manejar solicitudes JSON
+app.use(express.json()); // Parsear solicitudes JSON
 
 // Rutas
 const apiRoutes = require('./routes/apiRoutes');
