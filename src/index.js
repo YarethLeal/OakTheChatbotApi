@@ -5,6 +5,7 @@ const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 const port = process.env.PORT || 3000;
+const cors = require('cors');
 
 // Middleware de seguridad
 app.use(helmet()); // Configura encabezados HTTP seguros
@@ -16,6 +17,9 @@ const limiter = rateLimit({
   max: 100 // Limita cada IP a 100 solicitudes por ventana
 });
 app.use(limiter);
+
+// Configurar CORS
+app.use(cors());
 
 //Middleware para manejar solicitudes JSON
 app.use(express.json()); // Parsear solicitudes JSON
