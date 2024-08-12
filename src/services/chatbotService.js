@@ -29,12 +29,14 @@ findBestMatch = (input, queries) => {
     let bestMatch = { query: null, score: 0 };
 
     queries.forEach(query => {
-        const stemmedQuestion = tokenizeAndStem(query.question);
-        const score = similarity(input, stemmedQuestion);
+        query.question.forEach(question => {
+            const stemmedQuestion = tokenizeAndStem(question);
+            const score = similarity(input, stemmedQuestion);
 
-        if (score > bestMatch.score) {
-            bestMatch = { query, score };
-        }
+            if (score > bestMatch.score) {
+                bestMatch = { query, score };
+            }
+        });
     });
 
     return bestMatch;
