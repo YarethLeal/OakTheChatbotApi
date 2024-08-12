@@ -9,8 +9,8 @@ const handleUserInput = async (req, res) => {
 };
 
 // Controlador para la ruta /api/preguntas
-const getQuestions = (req, res) => {
-    const questions = getAllQuestions();
+const getQuestions = async (req, res) => {
+    const questions = await getAllQuestions();
     res.json({ questions });
 };
 
