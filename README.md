@@ -32,10 +32,10 @@
  
 <h3>Prerequisites</h3>
 
-List for all prerequisites necessary for running the project:
+List of all prerequisites necessary for running the project:
 
-- [NodeJS](https://github.com/)
-- [Git](https://github.com)
+- [NodeJS](https://nodejs.org/en)
+- [Git](https://git-scm.com/)
  
 <h3>Cloning</h3>
 
